@@ -2,7 +2,8 @@ from collections import deque
 import math
 dy = [-1, 0, 1, 0]
 dx = [0, 1, 0, -1]
-
+_dy= [-1, -1, -1, 0, 0, 0, 1, 1, 1]
+_dx= [-1, 0, 1, -1,0, 1, -1, 0, 1]
 def bfs(board, y, x, ty, tx):
     visited = [[False for _ in range(102)] for _ in range(102)]
     que = deque([])
@@ -31,14 +32,15 @@ def solution(rectangle, characterX, characterY, itemX, itemY):
         for y in range(y1 * 2, y2 * 2 + 1):
             for x in range(x1 * 2, x2 * 2 + 1):
                 board[y][x] = 2
-                
-    for y in range(101):
-        for x in range(101):
-            for i in range(3):
-                for j in range(3):
-                    if board[y + i - 1][x + j - 1] == 0 and board[y][x] == 2:
-                        board[y][x] = 1
-                        break
-                        
+    # 보드 다 돌면서 주위 8칸에 0이있으면 가장자리라 1로 찍기
+    for y in range(102):
+        for x in range(102):
+            for i in range(9):
+                ny = y + _dy[i]
+                nx = x + _dx[i]
+                if(ny < 0 or 102 <= ny or nx < 0 or 102 <= nx): continue
+                if(board[ny][nx] == 0 and board[y][x] == 2):
+                    board[y][x] = 1
+                    break
     answer = bfs(board, characterY*2, characterX*2, itemY * 2, itemX * 2)
     return math.floor(answer / 2)
