@@ -1,24 +1,12 @@
 -- 코드를 입력하세요
-SELECT r.FOOD_TYPE,
-(
-    select _r.REST_ID from REST_INFO _r
-    where r.FOOD_TYPE = _r.FOOD_TYPE
-    order by _r.FAVORITES desc
-    limit 1
-)as REST_ID, 
-(
-    select _r.REST_NAME from REST_INFO _r
-    where r.FOOD_TYPE = _r.FOOD_TYPE
-    order by _r.FAVORITES desc
-    limit 1
-) as REST_NAME, 
-(
-    select _r.FAVORITES from REST_INFO _r
-    where r.FOOD_TYPE = _r.FOOD_TYPE
-    order by _r.FAVORITES desc
-    limit 1
-) as FAVORITES
-from REST_INFO r
+SELECT r.FOOD_TYPE, r.REST_ID, r.REST_NAME, r.FAVORITES
+from 
+    REST_INFO r
+inner join 
+    (
+        select FOOD_TYPE, max(FAVORITES) as MAX_FAVORITES from REST_INFO
+        group by FOOD_TYPE
+    ) mf on mf.MAX_FAVORITES = r.FAVORITES
 group by r.FOOD_TYPE
 order by r.FOOD_TYPE desc
 
