@@ -1,3 +1,4 @@
+
 const fs = require('fs');
 const [N, M] = fs
   .readFileSync('/dev/stdin')
@@ -9,18 +10,16 @@ const [N, M] = fs
 
 const answer = [];
 const arr = [];
-const recur = (cnt, visited = new Set()) => {
+const recur = (cnt) => {
   if (arr.length === M) {
     answer.push([...arr]);
     return;
   }
   for (let i = 1; i <= N; ++i) {
-    if (visited.has(i)) continue;
-    visited.add(i);
+    if (arr.includes(i)) continue;
     arr.push(i);
-    recur(cnt + 1, visited);
+    recur(cnt + 1);
     arr.pop();
-    visited.delete(i);
   }
 };
 
