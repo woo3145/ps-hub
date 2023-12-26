@@ -82,7 +82,7 @@ bool isPrime(ull num){
         return num == 2;
     }
 
-    vector<ull> seeds = {2, 3, 5, 61};
+    vector<ull> seeds = {2, 3, 61};
 
     for(const auto& seed : seeds){
         if(num == seed) return true;
