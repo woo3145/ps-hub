@@ -14,11 +14,9 @@ vector<string> arr;
 
 void Input() {
     cin >> N;
-    arr.reserve(N);
+    arr.assign(N, "");
     for(int i = 0; i < N; ++i){
-        string a;
-        cin >> a;
-        arr.push_back(a);
+        cin >> arr[i];
     }
 }
 
