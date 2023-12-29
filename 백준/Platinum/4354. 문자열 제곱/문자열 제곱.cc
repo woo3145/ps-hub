@@ -9,7 +9,6 @@ using std::vector;
 using std::string;
 
 void createPI (vector<int>& pi, string& str);
-bool kmp(string& str, string& pattern);
 
 vector<string> strings;
 
@@ -24,21 +23,14 @@ void Input() {
 void Solve() {
     vector<int> answer;
     for(auto& s : strings){
-        string tmp = "";
-        bool flag = false;
-        for(int i = 0; i < s.length(); ++i){
-            tmp += s[i];
+        vector<int> pi;
+        createPI(pi, s);
 
-            if(s.length() % tmp.length() != 0) continue;
-
-            if(kmp(s, tmp)){
-                answer.push_back(s.length() / tmp.length());
-                flag = true;
-                break;
-            }
-            if(flag){
-                break;
-            }
+        int len = s.length();
+        if(pi[len - 1] != 0 && len % (len - pi[len - 1]) == 0){
+            answer.push_back(len / (len - pi[len - 1]));
+        }else{
+            answer.push_back(1);
         }
     }
     for(auto& a : answer){
@@ -58,6 +50,7 @@ int main() {
 }
 
 void createPI (vector<int>& pi, string& str){
+    pi.assign(str.length(), 0);
     int prefix = 0;
 
     for(int i = 1; i < str.length(); ++i){
@@ -69,32 +62,4 @@ void createPI (vector<int>& pi, string& str){
         }
         pi[i] = prefix;
     }
-}
-
-bool kmp(string& str, string& pattern){
-    int curIdx = 0;
-    vector<int> pi;
-    pi.assign(pattern.length(), 0);
-    createPI(pi, pattern);
-
-    int flag = 0;
-    for(int i = 0; i < str.length(); ++i){
-        while(curIdx && str[i] != pattern[curIdx]){
-            curIdx = pi[curIdx - 1];
-        }
-        if(str[i] == pattern[curIdx]){
-            ++curIdx;
-        }
-
-        // 찾음
-        if(curIdx == pattern.length()){
-            int findIdx = i - (pattern.length() - 1);
-            if(findIdx != flag) return false; // 실패
-            flag += pattern.length();
-            curIdx = pi[curIdx-1];
-        }
-    }
-
-    // 다돌면 성공
-    return flag == str.length();
 }
