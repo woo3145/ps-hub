@@ -60,7 +60,6 @@ int N, B;
 Trie trie;
 vector<string> strings;
 vector<int> scores = {0, 0, 0, 1, 1, 2, 3, 5, 11};
-
 const int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 const int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1}; 
 
@@ -82,6 +81,8 @@ void Input() {
 }
 
 void recursive (int y, int x, string str) {
+    if(8 < str.length()) return;
+    
     pair<bool, bool> result = trie.search(str);
     if(!result.second) return;
     if(result.first){
