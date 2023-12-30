@@ -11,41 +11,11 @@ using std::vector;
 using std::string;
 using std::unordered_map;
 using std::sort;
+using std::min;
 
-struct TrieNode {
-    bool isEnd;
-    unordered_map<char, TrieNode*> children;
-    TrieNode():isEnd(false) {};
-    ~TrieNode(){};
-};
-
-class Trie {
-private:
-    TrieNode* root;
-public:
-    Trie() {
-        root = new TrieNode();
-    };
-    ~Trie(){};
-    
-    bool insert(const string& str){
-        TrieNode* current = root;
-
-        for(const char& c : str){
-            if(current->children.find(c) == current->children.end()){
-                current->children[c] = new TrieNode();
-            }
-            if(current->isEnd) return false;
-            current = current->children[c];
-        }
-        current->isEnd = true;
-        return true;
-    };
-};
 
 int T, N;
 vector<string> nums;
-
 
 void Input() {
     nums.clear();
@@ -58,19 +28,20 @@ void Input() {
     }
 }
 void Solve() {
-    // 문자열 길이순 정렬
-    sort(nums.begin(), nums.end(), [](const string& a, const string& b) {
-        if(a.length() == b.length()){
-            return a < b;
-        }
-        return a.length() < b.length();
-    });
+    sort(nums.begin(), nums.end());
 
-    Trie trie;
     string answer = "YES";
     
-    for(const auto& s : nums){
-        if(!trie.insert(s)) {
+    for(int i = 0; i < nums.size() - 1; ++i){
+        int len = min(nums[i].length(), nums[i + 1].length());
+        bool isSame = true;
+        for(int j = 0; j < len; ++j){
+            if(nums[i][j] != nums[i+1][j]){
+                isSame = false;
+                break;
+            }
+        }
+        if(isSame){
             answer = "NO";
             break; 
         }
