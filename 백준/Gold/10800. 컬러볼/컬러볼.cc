@@ -33,7 +33,6 @@ void Input() {
 
 void Solve() {
     std::sort(balls.begin(), balls.end(),[](const Ball& a, const Ball& b){
-        if(a.weight == b.weight) return a.color < b.color;
         return a.weight < b.weight;
     });
     vector<int> answer;
@@ -42,7 +41,7 @@ void Solve() {
     cache.assign(N, 0);
     int sum = 0;
     int j = 0;
-    for(int i = 0; i < N; ++i){
+    for(int i = 1; i < N; ++i){
         while(balls[j].weight < balls[i].weight){
             sum += balls[j].weight;
             cache[balls[j].color] += balls[j].weight;
